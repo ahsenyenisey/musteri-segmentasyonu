@@ -13,23 +13,19 @@ from sklearn.metrics import silhouette_score
 import warnings
 warnings.filterwarnings('ignore')
 
-# Veriyi yükle
 df = pd.read_csv('Mall_Customers.csv')
 print("Veri seti yüklendi")
 print(df.head())
 print(f"\nToplam {len(df)} müşteri var")
 
-# Temel bilgiler
 print("\nVeri özeti:")
 print(df.describe())
 
 print("\nEksik değer var mı?")
 print(df.isnull().sum())
 
-# Sütun isimlerini değiştir
 df.columns = ['MusteriID', 'Cinsiyet', 'Yas', 'YillikGelir', 'HarcamaSkoru']
 
-# Görselleştirme
 fig, ax = plt.subplots(2, 2, figsize=(12, 8))
 
 ax[0,0].hist(df['Yas'], bins=15, color='skyblue', edgecolor='black')
@@ -48,7 +44,6 @@ plt.tight_layout()
 plt.savefig('1_veri_dagilimi.png')
 plt.close()
 
-# Gelir vs Harcama grafiği
 plt.figure(figsize=(8,6))
 plt.scatter(df['YillikGelir'], df['HarcamaSkoru'], alpha=0.6)
 plt.xlabel('Yillik Gelir (bin $)')
@@ -57,14 +52,11 @@ plt.title('Gelir - Harcama Iliskisi')
 plt.savefig('2_gelir_harcama.png')
 plt.close()
 
-# Kümeleme için veri hazırlığı
 X = df[['YillikGelir', 'HarcamaSkoru']].values
 
-# Ölçeklendirme
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-# Optimal küme sayısını bul - Elbow yöntemi
 wcss = []
 sil_scores = []
 
@@ -74,7 +66,6 @@ for k in range(2, 11):
     wcss.append(kmeans.inertia_)
     sil_scores.append(silhouette_score(X_scaled, kmeans.labels_))
 
-# Elbow ve Silhouette grafikleri
 fig, ax = plt.subplots(1, 2, figsize=(12, 4))
 
 ax[0].plot(range(2,11), wcss, 'o-')
@@ -97,7 +88,6 @@ print("\nSilhouette skorları:")
 for i, s in enumerate(sil_scores):
     print(f"k={i+2}: {s:.3f}")
 
-# k=5 ile model oluştur
 k = 5
 kmeans = KMeans(n_clusters=k, init='k-means++', random_state=42, n_init=10)
 df['Kume'] = kmeans.fit_predict(X_scaled)
@@ -105,7 +95,6 @@ df['Kume'] = kmeans.fit_predict(X_scaled)
 print(f"\nModel k={k} ile eğitildi")
 print(f"Silhouette skoru: {silhouette_score(X_scaled, df['Kume']):.3f}")
 
-# Kümeleri görselleştir
 plt.figure(figsize=(10,7))
 colors = ['red', 'blue', 'green', 'orange', 'purple']
 
@@ -114,7 +103,6 @@ for i in range(k):
     plt.scatter(cluster['YillikGelir'], cluster['HarcamaSkoru'],
                 c=colors[i], label=f'Kume {i}', s=60, alpha=0.7)
 
-# Küme merkezleri
 centers = scaler.inverse_transform(kmeans.cluster_centers_)
 plt.scatter(centers[:,0], centers[:,1], c='black', marker='X', s=200, label='Merkezler')
 
@@ -125,7 +113,6 @@ plt.legend()
 plt.savefig('4_kumeleme.png')
 plt.close()
 
-# Küme analizi
 print("\nKüme Analizi")
 for i in range(k):
     kume = df[df['Kume'] == i]
@@ -135,6 +122,5 @@ for i in range(k):
     print(f"Ort. harcama: {kume['HarcamaSkoru'].mean():.1f}")
     print(f"Ort. yaş: {kume['Yas'].mean():.1f}")
 
-# Sonucu kaydet
 df.to_csv('sonuc.csv', index=False)
 print("\nSonuçlar sonuc.csv dosyasına kaydedildi")
