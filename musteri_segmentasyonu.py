@@ -1,5 +1,8 @@
 # Müşteri Segmentasyonu Projesi
 # AVM müşterilerini gelir ve harcama skoruna göre gruplandırma
+#
+# Ahsen Yenisey
+# ahsenyeuisei@gmail.com
 
 import pandas as pd
 import numpy as np
@@ -12,15 +15,15 @@ warnings.filterwarnings('ignore')
 
 # Veriyi yükle
 df = pd.read_csv('Mall_Customers.csv')
-print("Data set installed")
+print("Veri seti yüklendi")
 print(df.head())
 print(f"\nToplam {len(df)} müşteri var")
 
 # Temel bilgiler
-print("\nData özeti:")
+print("\nVeri özeti:")
 print(df.describe())
 
-print("\nEksik value var mı?")
+print("\nEksik değer var mı?")
 print(df.isnull().sum())
 
 # Sütun isimlerini değiştir
