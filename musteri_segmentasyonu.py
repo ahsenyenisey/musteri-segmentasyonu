@@ -28,16 +28,16 @@ df.columns = ['MusteriID', 'Cinsiyet', 'Yas', 'YillikGelir', 'HarcamaSkoru']
 
 fig, ax = plt.subplots(2, 2, figsize=(12, 8))
 
-ax[0,0].hist(df['Yas'], bins=15, color='skyblue', edgecolor='black')
+ax[0,0].hist(df['Yas'], bins=15, color='deeppink', edgecolor='black')
 ax[0,0].set_title('Yas Dagilimi')
 
-ax[0,1].hist(df['YillikGelir'], bins=15, color='lightgreen', edgecolor='black')
+ax[0,1].hist(df['YillikGelir'], bins=15, color='purple', edgecolor='black')
 ax[0,1].set_title('Yillik Gelir Dagilimi')
 
-ax[1,0].hist(df['HarcamaSkoru'], bins=15, color='salmon', edgecolor='black')
+ax[1,0].hist(df['HarcamaSkoru'], bins=15, color='violet', edgecolor='black')
 ax[1,0].set_title('Harcama Skoru Dagilimi')
-
-ax[1,1].pie(df['Cinsiyet'].value_counts(), labels=['Kadin','Erkek'], autopct='%1.1f%%')
+ 
+ax[1,1].pie(df['Cinsiyet'].value_counts(), labels=['Kadin','Erkek'], colors=['pink', 'skyblue'], autopct='%1.1f%%')
 ax[1,1].set_title('Cinsiyet Dagilimi')
 
 plt.tight_layout()
